@@ -59,7 +59,7 @@ import com.eaio.util.lang.Hex;
  * If you use JDK 6 or later, the code in {@link InterfaceAddress} will be used.
  *
  * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="mailto:jb@eaio.de">Johann Burkard</a>
+ * @author <a href="http://johannburkard.de">Johann Burkard</a>
  * @version $Id: UUIDGen.java 5643 2013-04-02 20:01:22Z johann $
  * @see com.eaio.uuid.UUID
  */

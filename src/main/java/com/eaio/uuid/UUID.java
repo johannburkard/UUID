@@ -48,7 +48,7 @@ import com.eaio.util.lang.Hex;
  * http://www.uddi.org/pubs/draft-leach-uuids-guids-01.txt
  * </a>
  * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="mailto:jb@eaio.de">Johann Burkard</a>
+ * @author <a href="http://johannburkard.de">Johann Burkard</a>
  * @version $Id: UUID.java 5643 2013-04-02 20:01:22Z johann $
  */
 public class UUID implements Comparable<UUID>, Externalizable, Cloneable,

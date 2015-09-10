@@ -42,7 +42,7 @@ import org.junit.Test;
  * Test case for the {@link com.eaio.uuid.MACAddressParser} class.
  *
  * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="mailto:jb@eaio.com">Johann Burkard</a>
+ * @author <a href="http://johannburkard.de">Johann Burkard</a>
  * @version $Id: MACAddressParserTest.java 5643 2013-04-02 20:01:22Z johann $
  */
 public class MACAddressParserTest {
