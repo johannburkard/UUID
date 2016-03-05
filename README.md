@@ -100,3 +100,5 @@ Keep in mind that this UUID implementation has public field, so cloning should b
 * [UUID on johannburkard.de](http://johannburkard.de/software/uuid/)
 * [Maven-generated Site](http://johannburkard.de/software/uuid/site/)
 * [APIdoc](http://johannburkard.de/software/uuid/site/apidocs/)
+
+[![Analytics](https://ga-beacon.appspot.com/UA-7427410-89/UUID/README.md?pixel)](https://github.com/igrigorik/ga-beacon)
