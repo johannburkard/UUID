@@ -5,7 +5,7 @@
 	<groupId>com.eaio.uuid</groupId>
 	<artifactId>uuid</artifactId>
 	<packaging>jar</packaging>
-	<version>3.4</version>
+	<version>3.5</version>
 	<name>UUID</name>
 	<description>An implementation of the UUIDs and GUIDs specification in Java. UUIDs are 128 bit long identifiers that are guaranteed to be unique.</description>
 	<url>http://johannburkard.de/software/uuid/</url>
@@ -51,8 +51,8 @@
 				<version>3.0</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 					<compilerArgument>-g</compilerArgument>
 				</configuration>
 			</plugin>
