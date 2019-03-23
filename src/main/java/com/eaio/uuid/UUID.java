@@ -4,7 +4,7 @@
  * Created 07.02.2003
  *
  * UUID - an implementation of the UUID specification
- * Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+ * Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,9 +45,8 @@ import com.eaio.util.lang.Hex;
  * @see <a href="http://www.uddi.org/pubs/draft-leach-uuids-guids-01.txt">
  * http://www.uddi.org/pubs/draft-leach-uuids-guids-01.txt
  * </a>
- * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="http://johannburkard.de">Johann Burkard</a>
- * @version $Id: UUID.java 5643 2013-04-02 20:01:22Z johann $
+ * @see <a href="https://johannburkard.de/software/uuid/">UUID</a>
+ * @author <a href="https://johannburkard.de">Johann Burkard</a>
  */
 public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
 
@@ -124,6 +123,7 @@ public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      * @throws ClassCastException
      */
+    @Override
     public int compareTo(UUID t) {
         if (this == t) {
             return 0;
@@ -146,6 +146,7 @@ public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
     /**
      * Tweaked Serialization routine.
      */
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(time);
         out.writeLong(clockSeqAndNode);
@@ -154,6 +155,7 @@ public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
     /**
      * Tweaked Serialization routine.
      */
+    @Override
     public void readExternal(ObjectInput in) throws IOException {
         time = in.readLong();
         clockSeqAndNode = in.readLong();
@@ -213,7 +215,7 @@ public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
             Hex.append(out, (short) (clockSeqAndNode >> 48)).append('-');
             Hex.append(out, clockSeqAndNode, 12);
         }
-        catch (IOException ex) {
+        catch (IOException ignored) {
             // What were they thinking?
         }
         return out;
@@ -242,8 +244,7 @@ public class UUID implements Comparable<UUID>, Externalizable, Cloneable {
         try {
             return super.clone();
         }
-        catch (CloneNotSupportedException ex) {
-            // One of Sun's most epic fails.
+        catch (CloneNotSupportedException ignored) {
             return null;
         }
     }

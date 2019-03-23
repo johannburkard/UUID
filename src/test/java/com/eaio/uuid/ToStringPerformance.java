@@ -4,7 +4,7 @@
  * Created 2009-03-05
  *
  * UUID - an implementation of the UUID specification
- * Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+ * Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,9 +32,8 @@ import com.eaio.uuid.UUID;
 /**
  * Shell test to evaluate the performance of the <code>toString</code> methods.
  *
- * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="mailto:jb&#64;eaio.com">Johann Burkard</a>
- * @version $Id: UUIDTest.java 1327 2009-03-05 08:21:34Z johann $
+ * @see <a href="https://johannburkard.de/software/uuid/">UUID</a>
+ * @author <a href="https://johannburkard.de">Johann Burkard</a>
  */
 public class ToStringPerformance {
 

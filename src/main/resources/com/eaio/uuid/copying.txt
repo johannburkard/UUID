@@ -1,5 +1,5 @@
 UUID - an implementation of the UUID specification
-Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),

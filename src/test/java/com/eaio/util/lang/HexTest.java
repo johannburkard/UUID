@@ -4,7 +4,7 @@
  * Created 01.05.2008.
  *
  * UUID - an implementation of the UUID specification
- * Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+ * Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,9 +35,8 @@ import org.junit.Test;
 /**
  * Testcase for {@link Hex}.
  *
- * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="mailto:jb&#64;eaio.com">Johann Burkard</a>
- * @version $Id: HexTest.java 5643 2013-04-02 20:01:22Z johann $
+ * @see <a href="https://johannburkard.de/software/uuid/">UUID</a>
+ * @author <a href="https://johannburkard.de">Johann Burkard</a>
  */
 public class HexTest {
 
@@ -86,5 +85,11 @@ public class HexTest {
 		assertThat(Hex.parseLong("00:FF:B5:03:0C:EA"), is(0xffb5030ceaL));
 		assertThat(Hex.parseLong("12:ff:b5:03:0c:ea"), is(0x12ffb5030ceaL));
 	}
+    
+    @Test
+    public void testDockerHostnames() {
+        assertThat(Hex.parseLong("64e3b0fa7da8"), is(0x64e3b0fa7da8L));
+        assertThat(Hex.parseLong("be57a73c25eb"), is(0xbe57a73c25ebL));
+    }
 
 }

@@ -4,7 +4,7 @@
  * Created on 09.08.2003.
  *
  * UUID - an implementation of the UUID specification
- * Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+ * Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -46,21 +45,9 @@ import com.eaio.util.lang.Hex;
 /**
  * This class contains methods to generate UUID fields. These methods have been
  * refactored out of {@link com.eaio.uuid.UUID}.
- * <p>
- * Starting with version 2, this implementation tries to obtain the MAC address
- * of the network card. Under Microsoft Windows, the <code>ifconfig</code>
- * command is used which may pop up a command window in Java Virtual Machines
- * prior to 1.4 once this class is initialized. The command window is closed
- * automatically.
- * <p>
- * The MAC address code has been tested extensively in Microsoft Windows,
- * Linux, Solaris 8, HP-UX 11, but should work in MacOS X and BSDs, too.
- * <p>
- * If you use JDK 6 or later, the code in {@link InterfaceAddress} will be used.
  *
- * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="http://johannburkard.de">Johann Burkard</a>
- * @version $Id: UUIDGen.java 5643 2013-04-02 20:01:22Z johann $
+ * @see <a href="https://johannburkard.de/software/uuid/">UUID</a>
+ * @author <a href="https://johannburkard.de">Johann Burkard</a>
  * @see com.eaio.uuid.UUID
  */
 public final class UUIDGen {
@@ -82,117 +69,70 @@ public final class UUIDGen {
 
     static {
 
-        try {
-            Class.forName("java.net.InterfaceAddress");
-            macAddress = Class.forName(
-                    "com.eaio.uuid.UUIDGen$HardwareAddressLookup").newInstance().toString();
-        }
-        catch (ExceptionInInitializerError err) {
-            // Ignored.
-        }
-        catch (ClassNotFoundException ex) {
-            // Ignored.
-        }
-        catch (LinkageError err) {
-            // Ignored.
-        }
-        catch (IllegalAccessException ex) {
-            // Ignored.
-        }
-        catch (InstantiationException ex) {
-            // Ignored.
-        }
-        catch (SecurityException ex) {
-            // Ignored.
+        if (inDockerContainer()) {
+            try {
+                // Via https://github.com/mrubin: "inside a docker container, the hostname is typically its container id"
+                macAddress = getFirstLineOfCommand("hostname");
+            }
+            catch (SecurityException ignored) {}
+            catch (IOException ignored) {}
         }
 
         if (macAddress == null) {
-
-            Process p = null;
-            BufferedReader in = null;
-
-            try {
-                String osname = System.getProperty("os.name", ""), osver = System.getProperty("os.version", "");
-
-                if (osname.startsWith("Windows")) {
-                    p = Runtime.getRuntime().exec(
-                            new String[] { "ipconfig", "/all" }, null);
-                }
-
-                // Solaris code must appear before the generic code
-                else if (osname.startsWith("Solaris")
-                        || osname.startsWith("SunOS")) {
-                    if (osver.startsWith("5.11")) {
-                        p = Runtime.getRuntime().exec(
-                        new String[] { "dladm", "show-phys", "-m" }, null);
-                    }
-                    else {
-                        String hostName = getFirstLineOfCommand("uname", "-n");
-                        if (hostName != null) {
-                            p = Runtime.getRuntime().exec(
-                                    new String[] { "/usr/sbin/arp", hostName },
-                                    null);
-                        }
-                    }
-                }
-                else if (new File("/usr/sbin/lanscan").exists()) {
-                    p = Runtime.getRuntime().exec(
-                            new String[] { "/usr/sbin/lanscan" }, null);
-                }
-                else if (new File("/sbin/ifconfig").exists()) {
-                    p = Runtime.getRuntime().exec(
-                            new String[] { "/sbin/ifconfig", "-a" }, null);
-                }
-
-                if (p != null) {
-                    in = new BufferedReader(new InputStreamReader(
-                            p.getInputStream()), 128);
-                    String l = null;
-                    while ((l = in.readLine()) != null) {
-                        macAddress = MACAddressParser.parse(l);
-                        if (macAddress != null
-                                && Hex.parseShort(macAddress) != 0xff) {
-                            break;
-                        }
-                    }
-                }
-
-            }
-            catch (SecurityException ex) {
-                // Ignore it.
-            }
-            catch (IOException ex) {
-                // Ignore it.
-            }
-            finally {
-                if (p != null) {
-                    close(in, p.getErrorStream(), p.getOutputStream());
-                    p.destroy();
-                }
-            }
-
+            macAddress = getFirstMACAddressFromNetworkInterfaces();
         }
 
-        if (macAddress != null) {
-            clockSeqAndNode |= Hex.parseLong(macAddress);
+        if (macAddress == null) {
+            initializeClockSeqAndNodeFromIPAddress();
         }
         else {
-            try {
-                byte[] local = InetAddress.getLocalHost().getAddress();
-                clockSeqAndNode |= (local[0] << 24) & 0xFF000000L;
-                clockSeqAndNode |= (local[1] << 16) & 0xFF0000;
-                clockSeqAndNode |= (local[2] << 8) & 0xFF00;
-                clockSeqAndNode |= local[3] & 0xFF;
-            }
-            catch (UnknownHostException ex) {
-                clockSeqAndNode |= (long) (Math.random() * 0x7FFFFFFF);
-            }
+            clockSeqAndNode |= Hex.parseLong(macAddress);
         }
 
         // Skip the clock sequence generation process and use random instead.
 
         clockSeqAndNode |= (long) (Math.random() * 0x3FFF) << 48;
+    }
 
+    private static void initializeClockSeqAndNodeFromIPAddress() {
+        try {
+            byte[] local = InetAddress.getLocalHost().getAddress();
+            clockSeqAndNode |= (local[0] << 24) & 0xFF000000L;
+            clockSeqAndNode |= (local[1] << 16) & 0xFF0000;
+            clockSeqAndNode |= (local[2] << 8) & 0xFF00;
+            clockSeqAndNode |= local[3] & 0xFF;
+        }
+        catch (UnknownHostException ex) {
+            clockSeqAndNode |= (long) (Math.random() * 0x7FFFFFFF);
+        }
+    }
+
+    private static boolean inDockerContainer() {
+        boolean out = false;
+        try {
+            File f = new File("/.dockerenv");
+            out = f.exists() && !f.isDirectory();
+        }
+        catch (SecurityException ignored) {}
+        return out;
+    }
+
+    private static String getFirstMACAddressFromNetworkInterfaces() {
+        try {
+            Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
+            if (ifs != null) {
+                while (ifs.hasMoreElements()) {
+                    NetworkInterface iface = ifs.nextElement();
+                    byte[] hardware = iface.getHardwareAddress();
+                    if (hardware != null && hardware.length == 6
+                            && hardware[1] != (byte) 0xff) {
+                        return Hex.append(new StringBuilder(36), hardware).toString();
+                    }
+                }
+            }
+        }
+        catch (SocketException ignored) {}
+        return null;
     }
 
     /**
@@ -296,39 +236,6 @@ public final class UUIDGen {
                 close(reader, p.getErrorStream(), p.getOutputStream());
                 p.destroy();
             }
-        }
-
-    }
-
-    /**
-     * Scans MAC addresses for good ones.
-     */
-    static class HardwareAddressLookup {
-
-        /**
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            String out = null;
-            try {
-                Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
-                if (ifs != null) {
-                    while (ifs.hasMoreElements()) {
-                        NetworkInterface iface = ifs.nextElement();
-                        byte[] hardware = iface.getHardwareAddress();
-                        if (hardware != null && hardware.length == 6
-                                && hardware[1] != (byte) 0xff) {
-                            out = Hex.append(new StringBuilder(36), hardware).toString();
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (SocketException ex) {
-                // Ignore it.
-            }
-            return out;
         }
 
     }

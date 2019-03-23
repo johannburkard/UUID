@@ -4,7 +4,7 @@
  * Created 04.07.2003.
  *
  * UUID - an implementation of the UUID specification
- * Copyright (c) 2003-2015 Johann Burkard (<http://johannburkard.de>)
+ * Copyright (c) 2003-2019 Johann Burkard (<https://johannburkard.de>)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -27,9 +27,8 @@ import java.io.IOException;
 /**
  * Number-to-hexadecimal and hexadecimal-to-number conversions.
  *
- * @see <a href="http://johannburkard.de/software/uuid/">UUID</a>
- * @author <a href="http://johannburkard.de">Johann Burkard</a>
- * @version $Id: Hex.java 5643 2013-04-02 20:01:22Z johann $
+ * @see <a href="https://johannburkard.de/software/uuid/">UUID</a>
+ * @author <a href="https://johannburkard.de">Johann Burkard</a>
  */
 public final class Hex {
 
@@ -109,9 +108,7 @@ public final class Hex {
                 lim -= 4;
             }
         }
-        catch (IOException ex) {
-            // Bla
-        }
+        catch (IOException ignored) {}
         return a;
     }
 
@@ -129,9 +126,7 @@ public final class Hex {
                 a.append(DIGITS[(byte) (b & 0x0F)]);
             }
         }
-        catch (IOException ex) {
-            // Bla
-        }
+        catch (IOException ignored) {}
         return a;
     }
 

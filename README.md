@@ -7,9 +7,9 @@ This is an implementation of the UUIDs and GUIDs specification in Java. UUIDs ar
 
 ## Download
 
-[Download UUID 3.4 (JAR)](http://repo.eaio.com/maven2/com/eaio/uuid/uuid/3.4/uuid-3.4.jar)
+[Download UUID 3.5 (JAR)](https://repo.eaio.com/maven2/com/eaio/uuid/uuid/3.5/uuid-3.5.jar)
 
-[Download UUID 3.4 (Source JAR)](http://repo.eaio.com/maven2/com/eaio/uuid/uuid/3.4/uuid-3.4-sources.jar)
+[Download UUID 3.5 (Source JAR)](https://repo.eaio.com/maven2/com/eaio/uuid/uuid/3.5/uuid-3.5-sources.jar)
 
 Or get UUID through Maven:
 
@@ -18,14 +18,14 @@ Or get UUID through Maven:
         <dependency>
             <groupId>com.eaio.uuid</groupId>
             <artifactId>uuid</artifactId>
-            <version>3.4</version>
+            <version>3.5</version>
         </dependency>
     </dependencies>
 …
     <repositories>
         <repository>
             <id>eaio.com</id>
-            <url>http://repo.eaio.com/maven2</url>
+            <url>https://repo.eaio.com/maven2</url>
         </repository>
     </repositories>
 ```
@@ -34,18 +34,7 @@ Or get UUID through Maven:
 
 A UUID (or GUID) is a unique identifier that can be created whithout a central authority. UUIDs can be used if a sequence number is not good enough. This implementation is thread safe and very fast.
 
-UUID generates version 1 UUIDs that contain the the MAC address of a network card. To obtain it, the following commands are invoked and their respective output parsed:
-
-* Microsoft Windows
-    * ipconfig /all
-* Solaris
-    * arp `uname -n`
-* Mac OS X, Linux, BSD, other Unices
-    * ifconfig -a
-* HP-UX
-    * /usr/sbin/lanscan
-* Solaris 11
-    * dladm show-phys -m
+UUID generates version 1 UUIDs that contain the the MAC address of a network card.
 
 UUID is licensed under the MIT License (OSI certified).
 
@@ -97,8 +86,8 @@ Keep in mind that this UUID implementation has public field, so cloning should b
 
 ## Other resources
 
-* [UUID on johannburkard.de](http://johannburkard.de/software/uuid/)
-* [Maven-generated Site](http://johannburkard.de/software/uuid/site/)
-* [APIdoc](http://johannburkard.de/software/uuid/site/apidocs/)
+* [UUID on johannburkard.de](https://johannburkard.de/software/uuid/)
+* [Maven-generated Site](https://johannburkard.de/software/uuid/site/)
+* [APIdoc](https://johannburkard.de/software/uuid/site/apidocs/)
 
 [![Analytics](https://ga-beacon.appspot.com/UA-7427410-89/UUID/README.md?pixel)](https://github.com/igrigorik/ga-beacon)
